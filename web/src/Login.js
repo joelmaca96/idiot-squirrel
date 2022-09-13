@@ -1,5 +1,5 @@
 
-import {auth} from './firebaseConfig';
+import {auth} from './components/Firebase/firebase';
 import { GoogleAuthProvider, 
         FacebookAuthProvider, 
         GithubAuthProvider,
