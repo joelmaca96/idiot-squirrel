@@ -1,11 +1,14 @@
-import React from 'react';
 import Login from './Login'
 
-export default () => {
-    return <div className='container'> 
-        <h1>Crear Post</h1>
-        <Login/>
-        <hr/>
-        <h1>Posts</h1>
+const App = () => {
+    return <div className='container centered-full-col'> 
+            <div>
+            <h1>Bienvenido a Idiot Squirrel</h1>
+            </div>
+            <hr/>
+            <Login/>
     </div>;
 };
+
+
+export default App;

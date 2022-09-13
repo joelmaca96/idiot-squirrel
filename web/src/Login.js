@@ -1,26 +1,27 @@
-import React ,{useState} from 'react';
-import {LoginFunction, auth} from './firebaseConfig';
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { GoogleLogin  } from 'react-google-login';
 
+import {auth} from './firebaseConfig';
+import { GoogleAuthProvider, 
+        FacebookAuthProvider, 
+        GithubAuthProvider,
+        signInWithPopup,
+        signOut
+    } from "firebase/auth";
+import Button from 'react-bootstrap/Button';
+import {FacebookLoginButton, GoogleLoginButton, AppleLoginButton, GithubLoginButton} from 'react-social-login-buttons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+const Login =  () => {
 
+    const GoogleProvider = new GoogleAuthProvider();
+    const FacebookProvider = new FacebookAuthProvider();
+    const GithubProvider = new GithubAuthProvider();
 
+    //Login function to show the login pop-up depending on the button pressed
+    const LoginWithProvider = async(provider) =>{
 
-export default () => {
-    const [title, setTitle] = useState('');
-    const provider = new GoogleAuthProvider();
-
-    const responseGoogle = (response) => {
-        console.log(response);
-    }
-
-    //funcion que se ejecuta al pulsar en el boton submit:
-    const onSubmit = async(event) =>{
-        event.preventDefault();
-
-        //hacemos la funcion async y nos aseguramos de que solo admite posts de la url deseada:
-        signInWithPopup(auth, provider)
+    //hacemos la funcion async y nos aseguramos de que solo admite posts de la url deseada:
+        await signInWithPopup(auth, provider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -39,19 +40,33 @@ export default () => {
                 const credential = GoogleAuthProvider.credentialFromError(error);
                 // ...
         });
-
-        //Una ez creado el post, limpiamos el titulo para que se pueda crear el siguiente:
-        setTitle('');
     };
 
-    return (<div> 
-        <GoogleLogin
-            clientId="424344501351-upv9uvkgq4psi4pnsljeuuacl5ivjm8u.apps.googleusercontent.com"
-            buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-        />
+    //Logout function
+    function logout (){
+        console.log("Login out user");
+        signOut(auth);
+    };
+
+    return (<div className='centered-col'>
+            <GoogleLoginButton onClick={() => { LoginWithProvider(GoogleProvider) }}/>
+            <FacebookLoginButton onClick={() => { LoginWithProvider(FacebookProvider) }} />
+            <GithubLoginButton onClick={() => { LoginWithProvider(GithubProvider) }} />
+            <AppleLoginButton onClick={() => {toast.warn("No implementado!")}} />
+
+            <ToastContainer autoClose={1500}
+                            pauseOnFocusLoss={false}
+                            draggable={false}
+                            pauseOnHover={false}/>            
+            <div>
+                <hr/>
+                <Button variant="secondary"
+                    onClick={logout}>
+                    Logout
+                </Button>
+            </div>
         </div>
     );
 };
+
+export default Login;
