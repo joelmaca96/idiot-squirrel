@@ -4,6 +4,9 @@ import { GoogleAuthProvider,
         FacebookAuthProvider, 
         GithubAuthProvider,
         signInWithPopup,
+        linkWithRedirect,
+        unlink,
+        fetchSignInMethodsForEmail,
         signOut
     } from "firebase/auth";
 import Button from 'react-bootstrap/Button';
@@ -25,26 +28,28 @@ const Login =  () => {
         await signInWithPopup(auth, provider)
             .then((result) => {
                 toast.dismiss();
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                console.log(credential, token, user);
                 toast.success("Sesion inciada!");
-                // ...
+                //TODO: Quitar esto de aqui!!!
+                const user = result.user;
+                unlink(user, "github.com");
             }).catch((error) => {
                 toast.dismiss();
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-                toast.error(error.message);
-        });
+                //Handle para usuario ya linkeado con provider distinto
+                if(error.code === "auth/account-exists-with-different-credential"){
+                    if(auth.currentUser !== null){
+                        linkWithRedirect(auth.currentUser, provider)
+                        .then((result) => {console.log(result)})
+                        .catch((error) => {console.log(error);});
+                    }
+                    else{
+                        toast.error("Cuenta ya vinculada a un servicio de autenticacion, inicia sesion con el otro primero.");
+                    }
+                }
+                else{
+                    //TODO: eliminar esto cuando termine de debuguear
+                    toast.error(error.message);
+                }
+            });
     };
 
     //Login With email function
@@ -94,7 +99,7 @@ const Login =  () => {
                 <FacebookLoginButton onClick={() => { LoginWithProvider(FacebookProvider) }} />
                 <GithubLoginButton onClick={() => { LoginWithProvider(GithubProvider) }} />
                 <AppleLoginButton onClick={() => {toast.warn("No implementado!")}} />
-                <ToastContainer autoClose={1500} pauseOnFocusLoss={false} draggable={false} npauseOnHover={false}/> 
+                <ToastContainer autoClose={2000} pauseOnFocusLoss={false} draggable={false} npauseOnHover={false}/> 
             </div>
 
             <div>
