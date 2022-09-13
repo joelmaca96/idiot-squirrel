@@ -20,18 +20,21 @@ const Login =  () => {
 
     //Login function to show the login pop-up depending on the button pressed
     const LoginWithProvider = async(provider) =>{
-
-    //hacemos la funcion async y nos aseguramos de que solo admite posts de la url deseada:
+        toast.loading("Iniciando sesion...");
+        
         await signInWithPopup(auth, provider)
             .then((result) => {
+                toast.dismiss();
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
                 console.log(credential, token, user);
+                toast.success("Sesion inciada!");
                 // ...
             }).catch((error) => {
+                toast.dismiss();
                 // Handle Errors here.
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -40,6 +43,7 @@ const Login =  () => {
                 // The AuthCredential type that was used.
                 const credential = GoogleAuthProvider.credentialFromError(error);
                 // ...
+                toast.error(error.message);
         });
     };
 
@@ -67,9 +71,11 @@ const Login =  () => {
               <Form.Label>Contraseña</Form.Label>
               <Form.Control type="password" placeholder="Contraseña" />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={LoginWithEmail}>
-              Iniciar Sesion
-            </Button>
+            <div className='text-center'>
+                <Button className="text-center" variant="primary" type="submit" onClick={LoginWithEmail}>
+                Iniciar Sesion
+                </Button>
+            </div>
           </Form>
         );
       }
