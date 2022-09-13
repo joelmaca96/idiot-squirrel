@@ -4,6 +4,7 @@ import { GoogleAuthProvider,
         FacebookAuthProvider, 
         GithubAuthProvider,
         signInWithPopup,
+        signInWithEmailAndPassword,
         linkWithRedirect,
         unlink,
         fetchSignInMethodsForEmail,
@@ -63,27 +64,7 @@ const Login =  () => {
         signOut(auth);
     };
 
-    //Email form creation
-    function EmailFormConstructor() {
-        return (
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="agapito@pelikano.com" />
-            </Form.Group>
-      
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control type="password" placeholder="Contraseña" />
-            </Form.Group>
-            <div className='text-center'>
-                <Button className="text-center" variant="primary" type="submit" onClick={LoginWithEmail}>
-                Iniciar Sesion
-                </Button>
-            </div>
-          </Form>
-        );
-      }
+
 
     return (<div className='centered-col'>
             <div>

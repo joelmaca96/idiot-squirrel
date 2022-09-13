@@ -1,7 +1,10 @@
 // Import the functions you need from the SDKs you need
-import React from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth,
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        signInWithPopup
+        } from "firebase/auth"; 
 import { getFunctions, connectFunctionsEmulator  } from "firebase/functions";
 
 // Configuracion del backend de desarrollo
@@ -18,22 +21,43 @@ const firebaseDevConfig = {
 //En un futuro será interesante tener un backend de desarrollo y otro de produccion
 //Por el momento son el mismo
 //TODO: Crear y desplegar un backend de desarrollo
-const config = process.env.REACT_APP_DEVELOPMENT === 'production' ? firebaseDevConfig : firebaseDevConfig;
+const config = process.env.REACT_APP_BUILD_MODE === 'production' ? firebaseDevConfig : firebaseDevConfig;
 
 //Clase firebase para ser utilizada por toda la aplicacion
 class Firebase {
   constructor() {
-    console.log(process.env.REACT_APP_API_KEY)
-    //Arranque de las distintas herramientas que usamos de firebase
-    const app = initializeApp(config);
-    const auth = getAuth(app);
-    const functions = getFunctions(app);
 
+    //Arranque del core de firebase
+    const app = initializeApp(config);
+
+    //Instanciar las distintas herramientas de firebase
+    this.auth = getAuth(app);
+    this.functions = getFunctions(app);
+
+    //Conexion a los simuladores en lugar de al endpoint final
     if(process.env.REACT_APP_USE_SIMULATORS ==="1"){
+      console.warn("Estas usando un entorno de desarrollo!!!");
       //Conectar a los simuladores pertinentes
-      connectFunctionsEmulator(functions, "localhost", 5001);
+      connectFunctionsEmulator(this.functions, "localhost", 5001);
     }
   }
+
+  //API para las funciones de autenticacion
+  doCreateUserWithEmailAndPassword = (email, password) =>
+    createUserWithEmailAndPassword(this.auth,email, password);
+
+  doSignInWithEmailAndPassword = (email, password) =>
+    signInWithEmailAndPassword(this.auth, email, password);
+
+  doSignInWithPopUp = (provider) => 
+    signInWithPopup(this.auth,provider);
+
+  doSignOut = () => this.auth.signOut();
+
+  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+
+  doPasswordUpdate = password =>
+    this.auth.currentUser.updatePassword(password);
 }
 
 export default Firebase;
