@@ -3,6 +3,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth,
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
+        GoogleAuthProvider,
+        FacebookAuthProvider,
+        GithubAuthProvider,
         signInWithPopup
         } from "firebase/auth"; 
 import { getFunctions, connectFunctionsEmulator  } from "firebase/functions";
@@ -33,6 +36,11 @@ class Firebase {
     //Instanciar las distintas herramientas de firebase
     this.auth = getAuth(app);
     this.functions = getFunctions(app);
+
+    //Proveedores de inicio de sesion externos
+    this.GoogleProvider = new GoogleAuthProvider();
+    this.FacebookProvider = new FacebookAuthProvider();
+    this.GithubProvider = new GithubAuthProvider();
 
     //Conexion a los simuladores en lugar de al endpoint final
     if(process.env.REACT_APP_USE_SIMULATORS ==="1"){

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import withNavigateHook  from '../../constants/routes';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { Form, Button } from 'react-bootstrap';
 import '../../style.css'
+import './LoginStyle.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -36,8 +38,11 @@ class SignUpFormBase extends Component {
       )
   }
 
+  
+
   //TODO: Añadir loader de creacion de usuario y pop-ups de error de contraseña
   onSubmit = event => {
+
     toast.loading("Creando usuario...");
     const { username, email, passwordOne } = this.state;
 
@@ -48,11 +53,10 @@ class SignUpFormBase extends Component {
         toast.success("Usuario creado con exito!")
         //Creacion exitosa de usuario --> ir a Login
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.SIGN_IN);
+        this.props.navigation(ROUTES.SIGN_IN, { replace: true });
       })
       .catch(error => {
         toast.dismiss();
-        toast.error(error);
         this.setState({ error });
       });
 
@@ -60,10 +64,11 @@ class SignUpFormBase extends Component {
   }
 
   onChange = event => {
+    
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  //Email form creation
+  //Constructor de la visualizacion
   EmailFormConstructor = () =>{
     return(
     <Form>
@@ -82,8 +87,15 @@ class SignUpFormBase extends Component {
       <Form.Control type="password"  onChange={this.onChange} name ="passwordTwo" value={this.state.passwordTwo} placeholder="Confirmar contraseña" />
     </Form.Group>
 
+    {
+      //Mensaje de error
+      this.state.error !== null ? (
+        <div className='text-center alert-content'>Ha ocurrido algun error, inténtalo de nuevo</div>
+      ) : (<br/>)
+    }
+
     <div className='text-center'>
-        <Button className="text-center" disabled={this.isInvalid()} variant="primary" type="submit" onClick={this.onSubmit}>
+        <Button className="text-center" disabled={/*this.isInvalid()*/0} variant="primary" type="submit" onClick={this.onSubmit}>
         Crear usuario
         </Button>
     </div>
@@ -92,12 +104,10 @@ class SignUpFormBase extends Component {
   }
 
   render() {
-
     return (
       <div className='centered-col'>
-        <ToastContainer autoClose={2000} pauseOnFocusLoss={false} draggable={false} npauseOnHover={false}/> 
         {this.EmailFormConstructor()}
-        
+        <ToastContainer autoClose={2000} pauseOnFocusLoss={false} draggable={false} npauseOnHover={false}/> 
       </div>
       
     );
@@ -112,7 +122,7 @@ const SignUpLink = () => (
 );
 
 //Objeto para mostrar en pantalla
-const SignUpForm = withFirebase(SignUpFormBase);
+const SignUpForm = withNavigateHook(withFirebase(SignUpFormBase));
 
 export default SignUpPage;
 

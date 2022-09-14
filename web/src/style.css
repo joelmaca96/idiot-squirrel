@@ -7,7 +7,7 @@
     height: 80vh;
   }
 
-  /* Centered column with auto width and height --> child components */
+/* Centered column with auto width and height --> child components */
 .centered-col {
     display: flex;
     flex-direction: column;

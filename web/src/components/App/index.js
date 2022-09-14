@@ -4,25 +4,23 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-
-import Navigation from '../Navigation';
-import LandingPage from '../Landing';
+//import LandingPage from '../Landing';
+import NavBar from '../NavBar';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordManagement from '../PasswordManagement';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
-
 import * as ROUTES from '../../constants/routes';
 
 const App = () => (
     <Router>
         <div>
-            <Navigation />
-            <hr />
+            {/*<Navigation /> <hr />*/}
             <Routes>
-                <Route exact path={ROUTES.LANDING} element={<LandingPage/>} />
+                {/*TODO: Reactivar la landing page*/}
+                <Route exact path={ROUTES.LANDING} element={<SignInPage/>} />
                 <Route path={ROUTES.SIGN_UP} element={<SignUpPage/>} />
                 <Route path={ROUTES.SIGN_IN} element={<SignInPage/>} />
                 <Route path={ROUTES.PASSWORD_FORGET} element={<PasswordManagement/>} />
@@ -33,5 +31,4 @@ const App = () => (
         </div>
     </Router>
 );
-
 export default App;

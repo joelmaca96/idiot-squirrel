@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { Component }from 'react'; 
+import withNavigateHook, * as ROUTES from '../../constants/routes';
 
+//Landing de mnomento solo redirecciona al login
 const Landing = () => (
   <div>
-    <h1>Landing</h1>
+    <LandingPage />
   </div>
 );
 
-export default Landing;
+class LandingPageBase extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    this.props.navigation(ROUTES.SIGN_IN, { replace: true });
+    return (
+      <div className='centered-col'>
+      </div>
+    );
+  }
+}
+
+
+const LandingPage = withNavigateHook(LandingPageBase);
+
+
+export default withNavigateHook(Landing);

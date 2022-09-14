@@ -18,9 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Login =  () => {
 
-    const GoogleProvider = new GoogleAuthProvider();
-    const FacebookProvider = new FacebookAuthProvider();
-    const GithubProvider = new GithubAuthProvider();
+    
 
     //Login function to show the login pop-up depending on the button pressed
     const LoginWithProvider = async(provider) =>{
