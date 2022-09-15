@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import withNavigateHook, * as ROUTES from '../../constants/routes';
+import { withAuthorization } from '../Session';
 import { Button } from 'react-bootstrap';
 import '../../common/style.css';
 
@@ -28,6 +29,10 @@ class HomePageBase extends Component {
   }
 }
 
+//Condicion para mostrar la pagina, sencillamente cualquier usuario 
+//autenticado puede verla
+const condition = authUser => !!authUser;
+
 const HomeForm = withNavigateHook(withFirebase(HomePageBase));
 
-export default HomePage;
+export default withAuthorization(condition)(HomePage);

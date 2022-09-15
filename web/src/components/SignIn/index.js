@@ -56,9 +56,6 @@ class SignInFormBase extends Component {
       .catch((error) => {
         toast.dismiss();
         console.log(error);
-
-        this.setState({ error });
-        console.log(this.state.error);
       });
 
     event.preventDefault();
