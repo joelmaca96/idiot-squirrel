@@ -45,3 +45,7 @@
 .text-color-text-low-emphasis {
   color: var(--color-text-low-emphasis);
 }
+
+.padding-top{
+  padding-top:50px;
+}
