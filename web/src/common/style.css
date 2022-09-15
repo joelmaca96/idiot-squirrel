@@ -1,0 +1,47 @@
+/* Centered column with full height --> Para el div principal */
+.centered-full-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+/* Centered column with auto width and height --> child components */
+.centered-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilo para la linea divisoria, copiado de Linkedin */
+.left-right-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.left-right-divider::before,
+.left-right-divider::after {
+  height: 1px;
+  width: auto;
+  background-color: rgb(0 0 0 / 0.35);
+  --tw-content: '';
+  content: var(--tw-content);
+  flex-grow: 1;
+}
+
+.my-2 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.px-2 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.text-color-text-low-emphasis {
+  color: var(--color-text-low-emphasis);
+}

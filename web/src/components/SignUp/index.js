@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import withNavigateHook  from '../../constants/routes';
+import withNavigateHook from '../../constants/routes';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { Form, Button } from 'react-bootstrap';
-import '../../style.css'
-import './LoginStyle.css'
+import '../../common/style.css';
+import './LoginStyle.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,86 +30,114 @@ class SignUpFormBase extends Component {
   }
 
   //TODO: Editar esto para que compruebe mejor los requerimientos de email y pass
-  isInvalid = () =>{
-      return(
-        this.state.passwordOne !== this.state.passwordTwo ||
-        this.state.passwordOne === '' ||
-        this.state.email === ''
-      )
-  }
-
-  
+  isInvalid = () => {
+    return (
+      this.state.passwordOne !== this.state.passwordTwo ||
+      this.state.passwordOne === '' ||
+      this.state.email === ''
+    );
+  };
 
   //TODO: Añadir loader de creacion de usuario y pop-ups de error de contraseña
-  onSubmit = event => {
-
-    toast.loading("Creando usuario...");
-    const { username, email, passwordOne } = this.state;
+  onSubmit = (event) => {
+    toast.loading('Creando usuario...');
+    const { email, passwordOne } = this.state;
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then(authUser => {
+      .then((authUser) => {
         toast.dismiss();
-        toast.success("Usuario creado con exito!")
+        toast.success('Usuario creado con exito!');
         //Creacion exitosa de usuario --> ir a Login
         this.setState({ ...INITIAL_STATE });
         this.props.navigation(ROUTES.SIGN_IN, { replace: true });
       })
-      .catch(error => {
+      .catch((error) => {
         toast.dismiss();
         this.setState({ error });
       });
 
     event.preventDefault();
-  }
+  };
 
-  onChange = event => {
-    
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   //Constructor de la visualizacion
-  EmailFormConstructor = () =>{
-    return(
-    <Form>
-    <Form.Group className="mb-3" controlId="formBasicEmail">
-      <Form.Label>Email</Form.Label>
-      <Form.Control type="email" onChange={this.onChange} name ="email" value={this.state.email} placeholder="agapito@pelikano.com" />
-    </Form.Group>
+  EmailFormConstructor = () => {
+    return (
+      <Form>
+        <Form.Group className='mb-3' controlId='formBasicEmail'>
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type='email'
+            onChange={this.onChange}
+            name='email'
+            value={this.state.email}
+            placeholder='agapito@pelikano.com'
+          />
+        </Form.Group>
 
-    <Form.Group className="mb-3" controlId="formBasicPassword">
-      <Form.Label>Contraseña</Form.Label>
-      <Form.Control type="password" onChange={this.onChange} name ="passwordOne" value={this.state.passwordOne} placeholder="Contraseña" />
-    </Form.Group>
+        <Form.Group className='mb-3' controlId='formBasicPassword'>
+          <Form.Label>Contraseña</Form.Label>
+          <Form.Control
+            type='password'
+            onChange={this.onChange}
+            name='passwordOne'
+            value={this.state.passwordOne}
+            placeholder='Contraseña'
+          />
+        </Form.Group>
 
-    <Form.Group className="mb-3" controlId="formBasicPassword2">
-      <Form.Label>Confirmar contraseña</Form.Label>
-      <Form.Control type="password"  onChange={this.onChange} name ="passwordTwo" value={this.state.passwordTwo} placeholder="Confirmar contraseña" />
-    </Form.Group>
+        <Form.Group className='mb-3' controlId='formBasicPassword2'>
+          <Form.Label>Confirmar contraseña</Form.Label>
+          <Form.Control
+            type='password'
+            onChange={this.onChange}
+            name='passwordTwo'
+            value={this.state.passwordTwo}
+            placeholder='Confirmar contraseña'
+          />
+        </Form.Group>
 
-    {
-      //Mensaje de error
-      this.state.error !== null ? (
-        <div className='text-center alert-content'>Ha ocurrido algun error, inténtalo de nuevo</div>
-      ) : (<br/>)
-    }
+        {
+          //Mensaje de error
+          this.state.error !== null ? (
+            <div className='text-center alert-content'>
+              Ha ocurrido algun error, inténtalo de nuevo
+            </div>
+          ) : (
+            <br />
+          )
+        }
 
-    <div className='text-center'>
-        <Button className="text-center" disabled={/*this.isInvalid()*/0} variant="primary" type="submit" onClick={this.onSubmit}>
-        Crear usuario
-        </Button>
-    </div>
-  </Form>
-    )
-  }
+        <div className='text-center'>
+          <Button
+            className='text-center'
+            disabled={/*this.isInvalid()*/ 0}
+            variant='primary'
+            type='submit'
+            onClick={this.onSubmit}
+          >
+            Crear usuario
+          </Button>
+        </div>
+      </Form>
+    );
+  };
 
   render() {
     return (
       <div className='centered-col'>
         {this.EmailFormConstructor()}
-        <ToastContainer autoClose={2000} pauseOnFocusLoss={false} draggable={false} npauseOnHover={false}/> 
+        <ToastContainer
+          autoClose={2000}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          npauseOnHover={false}
+        />
       </div>
-      
     );
   }
 }

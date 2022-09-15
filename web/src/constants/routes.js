@@ -2,12 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const withNavigateHook = (Component) => {
-    return (props) => {
-        const navigation = useNavigate();
+  return (props) => {
+    const navigation = useNavigate();
 
-        return <Component navigation={navigation} {...props} />
-    }
-}
+    return <Component navigation={navigation} {...props} />;
+  };
+};
 
 export const LANDING = '/';
 export const SIGN_UP = '/signup';
@@ -18,9 +18,3 @@ export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 
 export default withNavigateHook;
-
-
-
-
-
-

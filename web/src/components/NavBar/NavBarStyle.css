@@ -1,8 +1,0 @@
-
-/* Centered column with auto width and height --> child components */
-.right-aligned {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: right;
-}
