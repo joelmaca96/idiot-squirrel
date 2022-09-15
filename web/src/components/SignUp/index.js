@@ -50,7 +50,7 @@ class SignUpFormBase extends Component {
         toast.success('Usuario creado con exito!');
         //Creacion exitosa de usuario --> ir a Login
         this.setState({ ...INITIAL_STATE });
-        this.props.navigation(ROUTES.SIGN_IN, { replace: true });
+        this.props.navigation(ROUTES.SIGN_IN);
       })
       .catch((error) => {
         toast.dismiss();

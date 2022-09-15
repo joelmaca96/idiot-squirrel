@@ -50,7 +50,7 @@ const withAuthorization = (condition) => (Component) => {
       this.listener = this.props.firebase.auth.onAuthStateChanged(
         (authUser) => {
           if (!condition(authUser)) {
-            this.props.navigation(ROUTES.SIGN_IN, { replace: true });
+            this.props.navigation(ROUTES.SIGN_IN);
           }
         }
       );
@@ -62,11 +62,7 @@ const withAuthorization = (condition) => (Component) => {
 
     render() {
       return (
-        <AuthUserContext.Consumer>
-          {(authUser) =>
-            condition(authUser) ? <Component {...this.props} /> : null
-          }
-        </AuthUserContext.Consumer>
+          <Component {...this.props} />
       );
     }
   }

@@ -39,7 +39,7 @@ class SignInFormBase extends Component {
     toast.success('Autenticado con exito!');
 
     this.setState({ ...INITIAL_STATE });
-    this.props.navigation(ROUTES.HOME, { replace: true });
+    this.props.navigation(ROUTES.HOME);
   };
 
   //TODO: Añadir loader de creacion de usuario y pop-ups de error de contraseña
